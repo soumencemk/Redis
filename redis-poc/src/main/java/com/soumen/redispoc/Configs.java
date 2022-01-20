@@ -1,10 +1,6 @@
 package com.soumen.redispoc;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
 
 /**
  * @author Soumen Karmakar
@@ -13,16 +9,14 @@ import org.springframework.data.redis.core.RedisTemplate;
 @Configuration
 public class Configs {
 
-    @Bean
-    public LettuceConnectionFactory redisConnectionFactory() {
-        return new LettuceConnectionFactory(new RedisStandaloneConfiguration("localhost", 6379));
-    }
-
-    @Bean
-    public RedisTemplate<String, String> redisTemplate() {
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(redisConnectionFactory());
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
-    }
+    /*@Bean
+    public ReactiveRedisTemplate<String, Task> reactiveRedisTemplate(
+            ReactiveRedisConnectionFactory factory) {
+        StringRedisSerializer keySerializer = new StringRedisSerializer();
+        Jackson2JsonRedisSerializer<Task> valueSerializer = new Jackson2JsonRedisSerializer<>(Task.class);
+        RedisSerializationContext.RedisSerializationContextBuilder<String, Task> builder =
+                RedisSerializationContext.newSerializationContext(keySerializer);
+        RedisSerializationContext<String, Task> context = builder.value(valueSerializer).build();
+        return new ReactiveRedisTemplate<>(factory, context);
+    }*/
 }
