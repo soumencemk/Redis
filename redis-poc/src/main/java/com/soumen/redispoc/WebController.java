@@ -50,9 +50,9 @@ public class WebController {
         Mono<SampleResponse> responseMono = reactiveRedisTemplate.getConnectionFactory()
                 .getReactiveConnection()
                 .listCommands()
-                .brPop(taskIDBBufList, Duration.of(10, ChronoUnit.SECONDS))
-                .map(popResult -> Mono.just(SampleResponse.builder().status(Charset.defaultCharset().decode(popResult.getValue()).toString()).build()))
-                .flatMap(sampleResponseMono -> sampleResponseMono);
+                .brPop(taskIDBBufList, Duration.of(2, ChronoUnit.SECONDS))
+                .flatMap(popResult -> Mono.just(SampleResponse.builder().status(Charset.defaultCharset().decode(popResult.getValue()).toString()).build()))
+                .defaultIfEmpty(SampleResponse.builder().status("TIMEOUT").build());
         log.info("Waiting for BRPOP....");
         return responseMono;
     }
